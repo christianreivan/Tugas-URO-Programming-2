@@ -1,0 +1,82 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int poly[2][100000], polyRes[100000];
+int action, n_poly[2];
+int n_max = 0;
+int degree;
+
+void printAction() {
+  cout << "ACTION LIST: " << endl;
+  cout << "1. Polynomial addition" << endl;
+  cout << "2. Polynomial subtraction" << endl;
+  cout << "3. Polynomial multiplication" << endl;
+  cout << "4. Polynomial derivative" << endl;
+  cout << "##################################" << endl;
+}
+
+void getInput(){
+  int n = 1;
+  while(n <= 2) {
+    cout << "Degree for Polynom " << n << ": ";
+    cin >> n_poly[n-1];
+    if(n_poly[n-1] > n_max) {
+      n_max = n_poly[n-1];
+    }
+    for(int i = n_poly[n-1]; i>=0; i--) {
+      cout << "Masukkan koefisien degree ke - " << i << " : ";
+      cin >> poly[n-1][n_poly[n-1]-i];
+    }
+    n += 1;
+  }
+}
+
+void cetak(){
+  for(int i = n_max; i>=0; i--){
+    if(i == 0) {
+      cout << polyRes[i];
+    } else if(i == 1) {
+      cout << polyRes[i] << "x + ";
+    } else {
+      if(polyRes[i] != 0) {
+        cout << polyRes[i] << "x^" << i << " + ";
+      }
+    }
+  }
+}
+
+void doIt(int action){
+  getInput();
+  if(action == 3) {
+    int counter = 1;
+    for(int i = 0; i <= n_poly[0]; i++) {
+      for(int j = 0; j <= n_poly[1]; j++) {
+        polyRes[i+j] += poly[0][i]*poly[1][j];
+        if(polyRes[i+j] != 2 && counter != 2) {
+          cout << polyRes[i+j] << " ";
+        }
+        counter += 1;
+      }
+    }
+  } else {
+    for(int i = 0; i<=n_max; i++){
+      if(action == 1) {
+        polyRes[i] = poly[0][i] + poly[1][i];
+        cout << polyRes[i] << " ";
+      } else if (action == 2) {
+        polyRes[i] = poly[0][i] - poly[1][i];
+      } 
+      //else if (action == 4) {
+        
+      // }
+    }
+  }
+  cetak();
+}
+
+int main() {
+  printAction();
+  cout << "Action: ";
+  cin >> action;
+  doIt(action);
+}    
